@@ -563,19 +563,11 @@ public class InCallScreen extends Activity
 
         updateSettings();
 
-        if ((!Enable_Landscape_In_Call) && (getResources().getConfiguration().orientation==Configuration.ORIENTATION_LANDSCAPE)) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            // We are in Landscape mode physically, but have not enabled it in settings.
+        if (Enable_Landscape_In_Call) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         }
-        if (Enable_Landscape_In_Call && (getRequestedOrientation()!=ActivityInfo.SCREEN_ORIENTATION_SENSOR)){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-            // We have enabled Landscape in settings, but it looks like we are still locked in Portrait
-        }
-            // This next block is a little overkill, but I need to force a redraw
-        setContentView(R.layout.incall_screen);
-        initInCallScreen(); 
-        updateScreen();
-            
         mIsForegroundActivity = true;
         mIsForegroundActivityForProximity = true;
 
@@ -1194,7 +1186,7 @@ public class InCallScreen extends Activity
             return;
         }
         String action = intent.getAction();
-        if (DBG) log("internalResolveIntent: action=" + action);
+        log("internalResolveIntent: action=" + action);
 
         // In gingerbread and earlier releases, the InCallScreen used to
         // directly handle certain intent actions that could initiate phone
@@ -1738,8 +1730,8 @@ public class InCallScreen extends Activity
     private void onDisconnect(AsyncResult r) {
         Connection c = (Connection) r.result;
         Connection.DisconnectCause cause = c.getDisconnectCause();
-        if (DBG) log("onDisconnect: connection '" + c + "', cause = " + cause
-                + ", showing screen: " + mApp.isShowingCallScreen());
+        log("onDisconnect: connection '" + c + "', cause = " + cause
+            + ", showing screen: " + mApp.isShowingCallScreen());
 
         boolean currentlyIdle = !phoneIsInUse();
         int autoretrySetting = AUTO_RETRY_OFF;
@@ -3017,7 +3009,7 @@ public class InCallScreen extends Activity
      * Handles button clicks from the InCallTouchUi widget.
      */
     /* package */ void handleOnscreenButtonClick(int id) {
-        if (DBG) log("handleOnscreenButtonClick(id " + id + ")...");
+        log("handleOnscreenButtonClick(id " + id + ")...");
 
         switch (id) {
             // Actions while an incoming call is ringing:
@@ -3753,7 +3745,7 @@ public class InCallScreen extends Activity
      * necessary.
      */
     private void setInCallScreenMode(InCallScreenMode newMode) {
-        if (DBG) log("setInCallScreenMode: " + newMode);
+        log("setInCallScreenMode: " + newMode);
         mApp.inCallUiState.inCallScreenMode = newMode;
 
         switch (newMode) {

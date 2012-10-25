@@ -664,4 +664,7 @@
     <string name="vibrate_hangup_sum">Vibrace po ukončení hovoru</string>
     <string name="vibrate_call_waiting">Vibrace při dalším hovoru</string>
     <string name="vibrate_call_waiting_sum">Vibrace při čekajícím hovoru na lince</string>
+
+    <string name="landscape_mode_title">Zapnout režim na šířku</string>
+    <string name="landscape_mode_summary">Zapnout režim na šířku (pokud je zapnut senzor)</string>
 </resources>
